@@ -803,6 +803,30 @@ function applyDynamicSettings(settings) {
       el.style.display = 'none';
     });
   }
+
+  // Dynamic OpenGraph and Twitter SEO updates
+  const fullTitle = `${settings.site_name || 'Nexus Horizon'} — ${settings.site_tagline || 'Modern Publishing'}`;
+  const fullDesc = settings.site_description || settings.site_tagline || '';
+
+  document.querySelectorAll('.dynamic-og-title, .dynamic-twitter-title').forEach(el => el.setAttribute('content', fullTitle));
+  document.querySelectorAll('.dynamic-og-desc, .dynamic-twitter-desc').forEach(el => el.setAttribute('content', fullDesc));
+  document.querySelectorAll('.dynamic-og-site').forEach(el => el.setAttribute('content', settings.site_name || 'Nexus Horizon'));
+
+  // Update homepage JSON-LD Schema
+  const structuredDataEl = document.getElementById('structured-data-schema');
+  if (structuredDataEl && document.body.dataset.page === 'home') {
+    structuredDataEl.textContent = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Blog',
+      'name': settings.site_name || 'Nexus Horizon',
+      'url': window.location.href,
+      'description': fullDesc,
+      'publisher': {
+        '@type': 'Organization',
+        'name': settings.site_name || 'Nexus Horizon'
+      }
+    });
+  }
 }
 
 // Auto init theme and live sync

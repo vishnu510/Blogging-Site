@@ -81,8 +81,69 @@ async function loadPostDetails() {
     const data = await API.get(`/api/posts/${slug}`);
     currentPost = data.post;
 
-    // Set page title for SEO
-    document.title = `${currentPost.title} — ${settings.site_name || 'Nexus Horizon'}`;
+    // Dynamic SEO Metadata Injection
+    const fullSiteName = settings.site_name || 'Nexus Horizon';
+    const postTitle = `${currentPost.title} — ${fullSiteName}`;
+    const postDesc = currentPost.excerpt || 'Read the full story on Nexus Horizon.';
+    const postUrl = window.location.href;
+    const postImg = currentPost.cover_image && currentPost.cover_image.startsWith('http')
+      ? currentPost.cover_image
+      : new URL(currentPost.cover_image || './uploads/cloud-architecture.jpg', window.location.href).href;
+
+    document.title = postTitle;
+
+    const metaDesc = document.getElementById('meta-description');
+    if (metaDesc) metaDesc.content = postDesc;
+
+    const canonicalEl = document.getElementById('canonical-url');
+    if (canonicalEl) canonicalEl.href = postUrl;
+
+    const ogTitle = document.getElementById('og-title');
+    if (ogTitle) ogTitle.content = postTitle;
+    const ogDesc = document.getElementById('og-description');
+    if (ogDesc) ogDesc.content = postDesc;
+    const ogUrl = document.getElementById('og-url');
+    if (ogUrl) ogUrl.content = postUrl;
+    const ogImg = document.getElementById('og-image');
+    if (ogImg) ogImg.content = postImg;
+
+    const twTitle = document.getElementById('twitter-title');
+    if (twTitle) twTitle.content = postTitle;
+    const twDesc = document.getElementById('twitter-description');
+    if (twDesc) twDesc.content = postDesc;
+    const twImg = document.getElementById('twitter-image');
+    if (twImg) twImg.content = postImg;
+
+    // JSON-LD Structured Data Schema for Google Search
+    const schemaEl = document.getElementById('article-jsonld');
+    if (schemaEl) {
+      const schemaData = {
+        '@context': 'https://schema.org',
+        '@type': 'BlogPosting',
+        'headline': currentPost.title,
+        'description': postDesc,
+        'image': [postImg],
+        'datePublished': currentPost.created_at,
+        'dateModified': currentPost.updated_at || currentPost.created_at,
+        'author': {
+          '@type': 'Person',
+          'name': currentPost.author_name || 'Editorial Team'
+        },
+        'publisher': {
+          '@type': 'Organization',
+          'name': fullSiteName,
+          'logo': {
+            '@type': 'ImageObject',
+            'url': postImg
+          }
+        },
+        'mainEntityOfPage': {
+          '@type': 'WebPage',
+          '@id': postUrl
+        }
+      };
+      schemaEl.textContent = JSON.stringify(schemaData);
+    }
 
     renderPost(data.post);
     renderTableOfContents();
@@ -163,11 +224,15 @@ function renderPost(post) {
 function renderTableOfContents() {
   const contentEl = document.getElementById('post-content');
   const tocContainer = document.getElementById('toc-container');
-  if (!contentEl || !tocContainer) return;
+  const mobileTocCard = document.getElementById('mobile-toc-card');
+  const mobileTocContainer = document.getElementById('mobile-toc-container');
+  if (!contentEl) return;
 
   const headings = contentEl.querySelectorAll('h2, h3');
   if (headings.length === 0) {
-    document.getElementById('toc-card').style.display = 'none';
+    const desktopCard = document.getElementById('toc-card');
+    if (desktopCard) desktopCard.style.display = 'none';
+    if (mobileTocCard) mobileTocCard.style.display = 'none';
     return;
   }
 
@@ -185,7 +250,18 @@ function renderTableOfContents() {
     `;
   });
   html += '</ul>';
-  tocContainer.innerHTML = html;
+
+  if (tocContainer) tocContainer.innerHTML = html;
+  if (mobileTocContainer) {
+    mobileTocContainer.innerHTML = html;
+    // Auto-close details when a link is clicked
+    mobileTocContainer.querySelectorAll('.toc-link').forEach(link => {
+      link.addEventListener('click', () => {
+        const details = mobileTocCard.querySelector('details');
+        if (details) details.removeAttribute('open');
+      });
+    });
+  }
 
   // Active heading spy on scroll
   const observer = new IntersectionObserver((entries) => {

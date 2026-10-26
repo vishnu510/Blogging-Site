@@ -29,11 +29,33 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 function setupAdminEvents() {
+  const sidebar = document.getElementById('admin-sidebar');
+  const backdrop = document.getElementById('sidebar-backdrop');
+  const toggleBtn = document.getElementById('mobile-sidebar-toggle');
+
+  if (toggleBtn && sidebar) {
+    toggleBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('open');
+      if (backdrop) backdrop.classList.toggle('active');
+    });
+  }
+
+  if (backdrop && sidebar) {
+    backdrop.addEventListener('click', () => {
+      sidebar.classList.remove('open');
+      backdrop.classList.remove('active');
+    });
+  }
+
   // Section Navigation
   document.querySelectorAll('.admin-nav-item[data-section]').forEach(item => {
     item.addEventListener('click', () => {
       const section = item.getAttribute('data-section');
       showSection(section);
+      if (sidebar && sidebar.classList.contains('open')) {
+        sidebar.classList.remove('open');
+        if (backdrop) backdrop.classList.remove('active');
+      }
     });
   });
 

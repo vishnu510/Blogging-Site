@@ -1,0 +1,19 @@
+# Robots.txt for Nexus Horizon Modern Blogging Platform
+User-agent: *
+Allow: /
+Allow: /index.html
+Allow: /post.html*
+Allow: /post/*
+Allow: /uploads/
+Allow: /css/
+Allow: /js/
+
+# Disallow administrative and private endpoints
+Disallow: /admin
+Disallow: /admin/*
+Disallow: /admin.html
+Disallow: /login.html
+Disallow: /api/auth/
+
+# Dynamic & Static Sitemap
+Sitemap: https://vishnu510.github.io/Blogging-Site/sitemap.xml
