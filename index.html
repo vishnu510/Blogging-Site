@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title class="dynamic-site-name">Nexus Horizon — Modern Editorial & Technical Journal</title>
+  <meta name="description" content="A next-generation publishing platform crafted for modern creators, architectural deep-dives, and tech leadership." class="dynamic-site-desc">
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  
+  <!-- Core Stylesheets -->
+  <link rel="stylesheet" href="./css/main.css">
+  <link rel="stylesheet" href="./css/user.css">
+</head>
+<body data-page="home">
+  <!-- Ambient Atmospheric Glow -->
+  <div class="ambient-glow"></div>
+
+  <!-- Header / Navigation -->
+  <header class="site-header">
+    <div class="container nav-container">
+      <a href="./index.html" class="brand-wrapper">
+        <img src="" alt="Logo" class="brand-logo-img dynamic-brand-logo" style="display:none;" />
+        <div class="brand-logo-icon dynamic-brand-icon">
+          <span>N</span>
+        </div>
+        <div class="brand-text">
+          <span class="brand-name dynamic-site-name">Nexus Horizon</span>
+          <span class="brand-tagline-mini dynamic-site-tagline">Insights on modern engineering & design</span>
+        </div>
+      </a>
+
+      <div class="nav-actions">
+        <!-- Real-time sync badge -->
+        <div class="live-pulse-badge live-sync-indicator" title="Connected to Real-Time SSE Event Stream">
+          <span class="pulse-dot"></span>
+          <span>Live Sync</span>
+        </div>
+
+        <!-- Search button shortcut -->
+        <button class="nav-search-btn" onclick="document.getElementById('search-input').focus()">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          <span>Search</span>
+          <span class="kbd-shortcut">Ctrl K</span>
+        </button>
+
+        <!-- Theme toggle -->
+        <button class="theme-toggle-btn" aria-label="Toggle Theme" title="Toggle Light / Dark Mode"></button>
+
+        <!-- Admin Portal Gateway Link -->
+        <a href="./admin.html" class="btn btn-secondary btn-sm" title="Manage stories, media and settings">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
+          <span>Admin Portal</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container">
+    <!-- Hero Featured Article -->
+    <section class="hero-section" id="hero-container">
+      <!-- Injected dynamically by user.js -->
+    </section>
+
+    <!-- Filter & Categories Bar -->
+    <section class="filter-section" id="posts-section">
+      <div class="filter-bar">
+        <!-- Category Pills -->
+        <div class="category-pills" id="category-pills">
+          <!-- Populated dynamically -->
+        </div>
+
+        <!-- Controls: Search & Sort -->
+        <div class="filter-controls">
+          <div class="search-input-wrapper">
+            <svg class="search-icon-inside" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            <input type="text" id="search-input" class="search-input" placeholder="Search stories..." autocomplete="off">
+          </div>
+
+          <select id="sort-select" class="form-select" style="width: auto; padding: 0.55rem 1rem; border-radius: var(--radius-full); font-size: var(--text-sm);">
+            <option value="latest">Latest Stories</option>
+            <option value="popular">Most Popular</option>
+            <option value="likes">Most Appreciated</option>
+            <option value="oldest">Oldest First</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- Articles Feed Grid -->
+    <section class="posts-grid" id="posts-grid">
+      <!-- Populated dynamically -->
+    </section>
+
+    <!-- Pagination -->
+    <div id="pagination-container"></div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="brand-wrapper" style="margin-bottom: 0.85rem;">
+            <div class="brand-logo-icon dynamic-brand-icon">
+              <span>N</span>
+            </div>
+            <span class="brand-name dynamic-site-name">Nexus Horizon</span>
+          </div>
+          <p class="dynamic-site-desc" style="font-size: var(--text-sm); line-height: 1.6;">
+            A next-generation publishing platform crafted for modern creators, architectural deep-dives, and tech leadership.
+          </p>
+        </div>
+
+        <div class="footer-links-group">
+          <div>
+            <h4 class="footer-col-title">Navigation</h4>
+            <ul class="footer-links-list">
+              <li><a href="./index.html">Home</a></li>
+              <li><a href="#posts-section">Explore Articles</a></li>
+              <li><a href="./admin.html">Admin Dashboard</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="footer-col-title">Connect</h4>
+            <ul class="footer-links-list">
+              <li><a href="https://twitter.com" target="_blank" rel="noopener">Twitter / X</a></li>
+              <li><a href="https://github.com" target="_blank" rel="noopener">GitHub</a></li>
+              <li><a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span class="dynamic-footer-text">© 2026 Nexus Horizon. Dynamically managed, fully scalable & real-time synchronized.</span>
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <span style="font-family: var(--font-mono); font-size: 11px;">Active SQLite WAL Engine • SSE Real-Time</span>
+          <a href="./login.html" style="color: var(--primary); font-weight: 600;">Admin Login →</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="./js/api.js"></script>
+  <script src="./js/user.js"></script>
+</body>
+</html>

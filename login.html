@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Authentication — Nexus Horizon</title>
+  
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔐</text></svg>">
+  <link rel="stylesheet" href="./css/main.css">
+  
+  <style>
+    .login-container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      position: relative;
+    }
+
+    .login-card {
+      width: 100%;
+      max-width: 440px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-xl);
+      padding: 2.5rem;
+      box-shadow: var(--shadow-lg);
+      backdrop-filter: blur(16px);
+      position: relative;
+      z-index: 10;
+    }
+
+    .login-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .login-logo {
+      width: 52px;
+      height: 52px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-size: 1.75rem;
+      font-weight: 800;
+      margin: 0 auto 1rem;
+      box-shadow: 0 8px 24px rgba(99, 102, 241, 0.35);
+    }
+
+    .quick-creds-box {
+      background: var(--bg-subtle);
+      border: 1px dashed var(--border-strong);
+      border-radius: var(--radius-md);
+      padding: 0.85rem;
+      margin-bottom: 1.5rem;
+      font-size: var(--text-xs);
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+<body>
+  <div class="ambient-glow"></div>
+
+  <div class="login-container">
+    <div class="login-card">
+      <div class="login-header">
+        <div class="login-logo">⚡</div>
+        <h1 style="font-size: var(--text-2xl); font-weight: 800; margin-bottom: 0.35rem;">Admin Portal</h1>
+        <p style="font-size: var(--text-sm); color: var(--text-muted);">Sign in to manage articles, media, and site settings</p>
+      </div>
+
+      <!-- Quick demo autofill -->
+      <div class="quick-creds-box">
+        <div>
+          <strong>Demo Credentials:</strong><br>
+          Username: <code>admin</code> | Password: <code>admin123</code>
+        </div>
+        <button type="button" class="btn btn-secondary btn-sm" id="btn-autofill">Quick Fill</button>
+      </div>
+
+      <form id="login-form">
+        <div class="form-group">
+          <label class="form-label">Username or Email</label>
+          <input type="text" id="username" class="form-input" placeholder="admin" required autofocus>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" id="password" class="form-input" placeholder="••••••••" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem; padding: 0.85rem;">
+          Sign In to Dashboard
+        </button>
+      </form>
+
+      <div style="text-align: center; margin-top: 1.75rem;">
+        <a href="./index.html" style="font-size: var(--text-xs); color: var(--text-muted); text-decoration: underline;">
+          ← Back to Public Website
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script src="./js/api.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // If already authenticated, redirect
+      if (API.getToken()) {
+        API.get('/api/auth/me').then(() => {
+          window.location.href = getAdminUrl();
+        }).catch(() => {
+          API.setToken(null);
+        });
+      }
+
+      // Quick autofill
+      document.getElementById('btn-autofill').addEventListener('click', () => {
+        document.getElementById('username').value = 'admin';
+        document.getElementById('password').value = 'admin123';
+        showToast('Credentials Filled', 'Ready to sign in.', 'info');
+      });
+
+      // Submit
+      document.getElementById('login-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value;
+
+        try {
+          const res = await API.post('/api/auth/login', { username, password });
+          API.setToken(res.token);
+          showToast('Login Successful', `Welcome back, ${res.user.username}!`, 'success');
+          setTimeout(() => {
+            window.location.href = getAdminUrl();
+          }, 500);
+        } catch (err) {
+          showToast('Authentication Failed', err.message, 'danger');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
