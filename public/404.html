@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Redirecting...</title>
+  <script>
+    // GitHub Pages SPA router redirect
+    const path = window.location.pathname;
+    const parts = path.split('/').filter(Boolean);
+    
+    // Find repository subpath if any (e.g. /my-repo/post/slug)
+    let repoBase = '';
+    let subPath = path;
+
+    // Check if the first part is a repo name on github.io
+    if (window.location.hostname.includes('github.io') && parts.length > 0) {
+      repoBase = '/' + parts[0];
+      subPath = '/' + parts.slice(1).join('/');
+    }
+
+    if (subPath.startsWith('/post/')) {
+      const slug = subPath.replace('/post/', '');
+      window.location.replace(`${repoBase}/post.html?slug=${encodeURIComponent(slug)}`);
+    } else if (subPath.startsWith('/admin/login')) {
+      window.location.replace(`${repoBase}/login.html`);
+    } else if (subPath.startsWith('/admin')) {
+      window.location.replace(`${repoBase}/admin.html`);
+    } else {
+      window.location.replace(`${repoBase}/index.html`);
+    }
+  </script>
+</head>
+<body style="font-family:sans-serif;text-align:center;padding:3rem;background:#0b0f19;color:#fff">
+  <p>Redirecting to article...</p>
+</body>
+</html>
